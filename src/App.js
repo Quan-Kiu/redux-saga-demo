@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Users from './features/users';
+import Users from './containers/users';
 
 const App = (props) => {
     return <Users />;

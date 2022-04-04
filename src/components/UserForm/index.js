@@ -1,7 +1,7 @@
 import { Input, Typography, Form, Button } from 'antd';
 import React from 'react';
 import { MyAction } from '../../constants';
-import userAction from '../../features/users/usersAction';
+import userAction from '../../redux/user/usersAction';
 import store from '../../redux/store';
 import styles from './form.module.css';
 const { Title } = Typography;

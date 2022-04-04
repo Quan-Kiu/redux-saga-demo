@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import UserForm from '../../components/UserForm';
 import { MyAction } from '../../constants';
 import store from '../../redux/store';
-import userAction from './usersAction';
+import userAction from '../../redux/user/usersAction';
 
 const Users = (props) => {
     const [isOpenForm, setIsOpenForm] = useState(false);
