@@ -1,16 +1,18 @@
-import { Input, Typography, Form, Button } from 'antd';
+import { Button, Form, Input, Typography } from 'antd';
 import React from 'react';
-import { MyAction } from '../../constants';
-import userAction from '../../redux/user/usersAction';
-import store from '../../redux/store';
-import styles from './form.module.css';
+import { useDispatch } from 'react-redux';
+import { MyAction } from '../../../../constants';
+import notifyAction from '../../../../redux/notify/notifyAction';
+import userAction from '../../../../redux/user/usersAction';
+import styles from './userform.module.css';
 const { Title } = Typography;
 const UserForm = ({ onClose, currentUser }) => {
+    const dispatch = useDispatch();
     const onFinish = (values) => {
         if (Object.keys(currentUser).length <= 0) {
-            store.dispatch(userAction(MyAction.ADD_USER, values));
+            dispatch(userAction(MyAction.ADD_USER, values));
         } else {
-            store.dispatch(
+            dispatch(
                 userAction(MyAction.EDIT_USER, {
                     ...currentUser,
                     name: values.name,
@@ -20,7 +22,10 @@ const UserForm = ({ onClose, currentUser }) => {
         onClose();
     };
 
-    const onFinishFailed = (errorInfo) => {};
+    const onFinishFailed = (errorInfo) => {
+        dispatch(notifyAction(MyAction.NOTIFY_FAILED, errorInfo.errorFields[0].errors[0]));
+    };
+
     return (
         <div className={styles.form} onClick={onClose}>
             <div onClick={(e) => e.stopPropagation()} className={styles.content}>

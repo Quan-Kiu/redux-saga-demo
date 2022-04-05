@@ -1,0 +1,15 @@
+.content {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    padding: 40px;
+    border: thin solid rgba(0, 0, 0, 0.3);
+}
+
+.title {
+    text-align: center;
+}

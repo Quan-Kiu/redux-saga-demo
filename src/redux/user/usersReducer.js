@@ -73,4 +73,6 @@ const usersReducer = (state = initialState, action) => {
     }
 };
 
+export const selectUsers = (state) => state.users.data;
+
 export default usersReducer;
