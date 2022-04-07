@@ -1,8 +1,11 @@
-import { Button, Layout, Menu, Space, Table } from 'antd';
+import { Button, Input, Layout, Menu, Pagination, Space, Table } from 'antd';
 import { Content, Footer, Header } from 'antd/lib/layout/layout';
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { MyAction } from '../../constants';
+import useCustomRoute from '../../hooks/useCustomRoute';
+import usePagination from '../../hooks/usePagination';
+import useQuery from '../../hooks/useQuery';
 import authAction from '../../redux/auth/authAction';
 import store from '../../redux/store';
 import userAction from '../../redux/user/usersAction';
@@ -12,11 +15,18 @@ import styles from './dashboard.module.css';
 const Dashboard = (props) => {
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [currentUser, setCurrentUser] = useState([]);
-    const users = useSelector((state) => state.users);
+    const { data } = useQuery();
+    const { data: users, total, page } = usePagination(data);
+    const { pushQuery } = useCustomRoute();
+    const dispatch = useDispatch();
 
     const handleEditUser = (currentUser) => {
         setCurrentUser(currentUser);
         setIsOpenForm(true);
+    };
+
+    const handleOnPageChange = (values) => {
+        pushQuery({ page: values });
     };
 
     const columns = useMemo(
@@ -41,7 +51,7 @@ const Dashboard = (props) => {
                         <Button onClick={() => handleEditUser(record)} type="primary">
                             Edit
                         </Button>
-                        <Button onClick={() => store.dispatch(userAction(MyAction.REMOVE_USER, record))} danger>
+                        <Button onClick={() => dispatch(userAction(MyAction.REMOVE_USER, record))} danger>
                             Delete
                         </Button>
                     </Space>
@@ -65,6 +75,7 @@ const Dashboard = (props) => {
                 <Button style={{ marginBottom: '40px' }} type="primary" onClick={() => setIsOpenForm(!isOpenForm)}>
                     Add User
                 </Button>
+                <Input.Search onPressEnter={(e) => pushQuery({ search: e.target.value })} placeholder="Search" />
                 {isOpenForm && (
                     <UserForm
                         currentUser={currentUser}
@@ -74,7 +85,14 @@ const Dashboard = (props) => {
                         }}
                     />
                 )}
-                <Table columns={columns} dataSource={users.data} />;
+                <Table pagination={false} columns={columns} dataSource={users} />;
+                <Pagination
+                    onChange={handleOnPageChange}
+                    className={styles.pagination}
+                    pageSize={5}
+                    defaultCurrent={page}
+                    total={total}
+                />
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>

@@ -22,7 +22,7 @@ export function* handleLogout() {
     yield put(authAction(MyAction.LOGOUT_SUCCESS));
 }
 
-export function* handleLoginFlow() {
+export function* loginFlow() {
     while (true) {
         const { isLoggedIn } = yield select(selectAuth);
         if (!isLoggedIn) {
@@ -36,5 +36,5 @@ export function* handleLoginFlow() {
 }
 
 export default function* authSaga() {
-    yield all([handleLoginFlow()]);
+    yield all([loginFlow()]);
 }

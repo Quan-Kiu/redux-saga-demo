@@ -1,26 +1,17 @@
 import { MyAction } from '../../constants';
 
+const users = [];
+for (var i = 0; i < 50; i++) {
+    users.push({
+        id: i,
+        key: i,
+        name: `user${i}`,
+    });
+}
+
 const initialState = {
     loading: false,
-    data: [
-        {
-            id: 1,
-            key: 1,
-            name: 'user1',
-        },
-        {
-            id: 2,
-            key: 2,
-
-            name: 'user2',
-        },
-        {
-            id: 3,
-            key: 3,
-
-            name: 'user3',
-        },
-    ],
+    data: users,
 };
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
